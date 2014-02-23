@@ -30,6 +30,14 @@ return array(
 		*/
 	),
 
+    // используемые приложением поведения
+    'behaviors'=>array(
+        'runEnd'=>array(
+            'class'=>'application.behaviors.WebApplicationEndBehavior',
+        ),
+    ),
+
+
 	// application components
 	'components'=>array(
 		'user'=>array(
