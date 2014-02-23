@@ -20,4 +20,23 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            /* @var $cs CClientScript */
+            $baseUrl = Yii::app()->baseUrl;
+            $cs = Yii::app()->getClientScript();
+
+            /* @var $baseUrl$theme CTheme */
+            $theme = Yii::app()->theme;
+            $cs->registerCssFile($baseUrl . '/themes/bootstrap/css/bootstrap.min.css');
+            $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/jquery.js');
+            $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/bootstrap-transition.js');
+            $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/bootstrap-modal.js');
+            $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/bootstrap.js');
+            return true;
+        }
+        return false;
+    }
 }
