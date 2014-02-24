@@ -12,6 +12,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create SgOrder</h1>
+<h1>Добавить ордер</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
