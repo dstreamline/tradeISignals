@@ -40,7 +40,7 @@ class SgOrderController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','addloss'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -175,4 +175,9 @@ class SgOrderController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    public function actionAddloss(){
+        var_dump($_POST);
+    }
+
 }
