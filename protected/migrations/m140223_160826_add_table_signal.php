@@ -15,7 +15,7 @@ class m140223_160826_add_table_signal extends CDbMigration
             'closed_date'     => 'datetime',
             'closed_price'     => 'varchar (15)',
             'result' => 'INT(10)'
-        ));
+        ), 'ENGINE = InnoDB COLLATE utf8_general_ci');
 	}
 
 	public function down()

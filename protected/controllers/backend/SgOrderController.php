@@ -19,7 +19,7 @@ class SgOrderController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			//'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -40,7 +40,7 @@ class SgOrderController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','addloss'),
+				'actions'=>array('admin','delete','addloss','addprofit'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -75,9 +75,28 @@ class SgOrderController extends Controller
 		if(isset($_POST['SgOrder']))
 		{
 			$model->attributes=$_POST['SgOrder'];
-			if($model->save())
-				$this->redirect(array('admin'));
+			if($model->save()){
+                if(isset($_POST['stoploss'])){
+                    $loss=new SgLossOrder;
+                    $loss->order_id=$model->id;
+                    $loss->price=$_POST['stoploss'];
+                    $loss->create_date=new CDbExpression('NOW()');
+                    $loss->insert();
+                }
+                if(isset($_POST['takeprofit'])){
+                    $loss=new SgProfitOrder();
+                    $loss->order_id=$model->id;
+                    $loss->price=$_POST['takeprofit'];
+                    $loss->create_date=new CDbExpression('NOW()');
+                    $loss->insert();
+                }
+                $this->redirect(array('admin'));
+            }
+
 		}
+
+
+
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -115,6 +134,7 @@ class SgOrderController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -177,7 +197,22 @@ class SgOrderController extends Controller
 	}
 
     public function actionAddloss(){
-        var_dump($_POST);
+        $loss=new SgLossOrder;
+        $loss->attributes=$_POST['SgLossOrder'];
+        $loss->create_date=new CDbExpression('NOW()');
+        $loss->insert();
+        $this->redirect(array('admin'));
     }
+    public function actionAddprofit(){
+        $loss=new SgProfitOrder();
+        $loss->attributes=$_POST['SgProfitOrder'];
+
+        $loss->create_date=new CDbExpression('NOW()');
+        $loss->insert();
+        $this->redirect(array('admin'));
+    }
+
+
+
 
 }

@@ -4,6 +4,8 @@
 /* @var $form CActiveForm */
 ?>
 
+
+
 <div class="form">
 
     <?php $form = $this->beginWidget('CActiveForm', array(
@@ -96,19 +98,6 @@
     </div>
 
 
-    <div class="row-md-12">
-        <?php echo $form->labelEx($model, 'comment'); ?>
-        <?php $this->widget('application.extensions.tinymce.ETinyMce',
-            array(
-                'model' => $model,
-                'attribute' => 'comment',
-                'editorTemplate' => 'full',
-                'htmlOptions' => array('rows' => 6, 'cols' => 50, 'class' => 'tinymce'),
-            )); ?>
-        <?php echo $form->error($model, 'comment'); ?>
-    </div>
-
-
     <div id="simple-div"></div>
 
     <div class="row show-grid">
@@ -136,10 +125,36 @@
             <?php echo $form->error($model, 'result'); ?>
         </div>
 
-        <div class="row buttons col-md-3">
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn btn-primary btn-lg')); ?>
+
+    </div>
+
+    <div class="row ">
+        <div class="row buttons col-md-12">
+            <button type="button" class="btn btn-default btn-lg btn-block add-comments">Подробное описание</button>
         </div>
     </div>
+
+    <div class="comment-block" style="display: none">
+    <div class="row-md-12" >
+        <?php echo $form->labelEx($model, 'comment'); ?>
+        <?php $this->widget('application.extensions.tinymce.ETinyMce',
+            array(
+                'model' => $model,
+                'attribute' => 'comment',
+                'editorTemplate' => 'full',
+                'htmlOptions' => array('rows' => 6, 'cols' => 50, 'class' => 'tinymce'),
+            )); ?>
+        <?php echo $form->error($model, 'comment'); ?>
+    </div>
+    </div>
+    <div class="row ">
+        <div class="row buttons col-md-12">
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn btn-primary btn-lg btn-block')); ?>
+        </div>
+    </div>
+
+
+
 </div>
 <?php $this->endWidget(); ?>
 
@@ -158,7 +173,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 ));
 
 $qForm = new SgLossOrder();
-
+if(isset($_GET['id'])){
+    $qForm->order_id=$_GET['id'];
+}
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'quick-form',
     'enableClientValidation' => true,
@@ -170,7 +187,7 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 
 
-
+<?php echo $form->hiddenField($qForm,'order_id'); ?>
 <?php echo $form->textField($qForm, 'price', array('size' => 15)); ?>
 
 
@@ -195,7 +212,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 ));
 
 $qForm = new SgProfitOrder();
-
+if(isset($_GET['id'])){
+    $qForm->order_id=$_GET['id'];
+}
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'quick-form',
     'enableClientValidation' => true,
@@ -207,7 +226,7 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 
 
-
+<?php echo $form->hiddenField($qForm,'order_id'); ?>
 <?php echo $form->textField($qForm, 'price', array('size' => 15)); ?>
 
 
@@ -223,3 +242,17 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 </div>
 <!-- form -->
+
+<script type="text/javascript">
+    $( ".add-comments" ).click(function() {
+
+        if($('.comment-block').css('display')=='block'){
+            $('.comment-block').fadeOut();
+        }
+        else{
+            $('.comment-block').fadeIn();
+            console.log(1);
+        }
+    });
+
+</script>

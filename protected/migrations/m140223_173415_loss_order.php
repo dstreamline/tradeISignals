@@ -9,7 +9,7 @@ class m140223_173415_loss_order extends CDbMigration
             'order_id' => 'int not null',
             'price'    => 'varchar (64) NOT NULL',
             'create_date' => 'datetime',
-        ));
+        ),'ENGINE = InnoDB COLLATE utf8_general_ci');
         $this->addForeignKey("fk_order_loss", "sg_loss_order", "order_id", "sg_order", "id", "CASCADE", "CASCADE");
 
     }

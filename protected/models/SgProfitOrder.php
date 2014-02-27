@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $order_id
  * @property string $create_date
+ * @property string $price
  */
 class SgProfitOrder extends CActiveRecord
 {
@@ -25,14 +26,15 @@ class SgProfitOrder extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
-			array('order_id', 'required'),
-			array('order_id', 'numerical', 'integerOnly'=>true),
-			array('create_date', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, order_id, create_date', 'safe', 'on'=>'search'),
-		);
+        return array(
+            array('order_id, price', 'required'),
+            array('order_id', 'numerical', 'integerOnly'=>true),
+            array('price', 'length', 'max'=>64),
+            array('create_date', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, order_id, price, create_date', 'safe', 'on'=>'search'),
+        );
 	}
 
 	/**
@@ -51,11 +53,12 @@ class SgProfitOrder extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
-			'id' => 'ID',
-			'order_id' => 'Order',
-			'create_date' => 'Create Date',
-		);
+        return array(
+            'id' => 'ID',
+            'order_id' => 'Order',
+            'price' => 'Price',
+            'create_date' => 'Create Date',
+        );
 	}
 
 	/**
@@ -78,6 +81,7 @@ class SgProfitOrder extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('order_id',$this->order_id);
+        $criteria->compare('price',$this->price,true);
 		$criteria->compare('create_date',$this->create_date,true);
 
 		return new CActiveDataProvider($this, array(
