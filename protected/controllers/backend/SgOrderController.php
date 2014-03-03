@@ -74,16 +74,16 @@ class SgOrderController extends Controller
 
 		if(isset($_POST['SgOrder']))
 		{
-			$model->attributes=$_POST['SgOrder'];
+            $model->attributes=$_POST['SgOrder'];
 			if($model->save()){
-                if(isset($_POST['stoploss'])){
+                if(isset($_POST['stoploss']) && $_POST['stoploss']!=""){
                     $loss=new SgLossOrder;
                     $loss->order_id=$model->id;
                     $loss->price=$_POST['stoploss'];
                     $loss->create_date=new CDbExpression('NOW()');
                     $loss->insert();
                 }
-                if(isset($_POST['takeprofit'])){
+                if(isset($_POST['takeprofit']) && $_POST['takeprofit']!=""){
                     $loss=new SgProfitOrder();
                     $loss->order_id=$model->id;
                     $loss->price=$_POST['takeprofit'];
@@ -122,8 +122,10 @@ class SgOrderController extends Controller
 				$this->redirect(array('admin'));
 		}
 
+        $loss=new SgLossOrder();
+        $profit=new SgProfitOrder();
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'loss'=>$loss, 'profit'=>$profit
 		));
 	}
 

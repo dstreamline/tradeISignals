@@ -2,3 +2,4 @@
 /.idea
 /protected/runtime
 /protected/config/console.php
+/protected/config/main.php

@@ -32,6 +32,9 @@ $('.search-form form').submit(function(){
 	'id'=>'sg-order-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+    'itemsCssClass'=>'table table-striped table-bordered',
+    'rowCssClassExpression' => '( $data->getOrderClass())
+    ',
 	'columns'=>array(
 		'id',
 		'tool',

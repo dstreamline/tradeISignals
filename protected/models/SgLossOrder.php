@@ -73,7 +73,7 @@ class SgLossOrder extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($id=false)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -83,7 +83,9 @@ class SgLossOrder extends CActiveRecord
 		$criteria->compare('order_id',$this->order_id);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('create_date',$this->create_date,true);
-
+        if($id){
+            $criteria->addCondition('order_id='.$id,'AND');
+       }
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

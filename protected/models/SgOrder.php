@@ -9,10 +9,15 @@
  * @property string $date_enter
  * @property string $order_type
  * @property string $enter_price
+ * @property string $lotsize
  * @property string $comment
  * @property string $closed_date
  * @property string $closed_price
  * @property integer $result
+ *
+ * The followings are the available model relations:
+ * @property SgLossOrder[] $sgLossOrders
+ * @property SgProfitOrder[] $sgProfitOrders
  */
 class SgOrder extends CActiveRecord
 {
@@ -37,11 +42,12 @@ class SgOrder extends CActiveRecord
 			array('tool', 'length', 'max'=>64),
 			array('order_type', 'length', 'max'=>10),
 			array('enter_price, closed_price', 'length', 'max'=>15),
+			array('lotsize', 'length', 'max'=>32),
 			array('comment', 'length', 'max'=>256),
 			array('date_enter, closed_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tool, date_enter, order_type, enter_price, comment, closed_date, closed_price, result', 'safe', 'on'=>'search'),
+			array('id, tool, date_enter, order_type, enter_price, lotsize, comment, closed_date, closed_price, result', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +59,8 @@ class SgOrder extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'sgLossOrders' => array(self::HAS_MANY, 'SgLossOrder', 'order_id'),
+			'sgProfitOrders' => array(self::HAS_MANY, 'SgProfitOrder', 'order_id'),
 		);
 	}
 
@@ -61,17 +69,18 @@ class SgOrder extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
-			'id' => 'ID',
-			'tool' => 'Валютная пара',
-			'date_enter' => 'Дата/Время открытия ордера',
-			'order_type' => 'Тип ордера (buy/sell)',
-			'enter_price' => 'Цена входа',
-			'comment' => 'Комментарий',
-			'closed_date' => 'Дата/Время закрытия ордера',
-			'closed_price' => 'Цена выхода',
-			'result' => 'Количество полученных пунктов',
-		);
+        return array(
+            'id' => 'ID',
+            'tool' => 'Валютная пара',
+            'date_enter' => 'Дата/Время открытия ордера',
+            'order_type' => 'Тип ордера (buy/sell)',
+            'enter_price' => 'Цена входа',
+            'comment' => 'Комментарий',
+            'closed_date' => 'Дата/Время закрытия ордера',
+            'closed_price' => 'Цена выхода',
+            'lotsize' => 'Размер лота',
+            'result' => 'Количество полученных пунктов',
+        );
 	}
 
 	/**
@@ -97,6 +106,7 @@ class SgOrder extends CActiveRecord
 		$criteria->compare('date_enter',$this->date_enter,true);
 		$criteria->compare('order_type',$this->order_type,true);
 		$criteria->compare('enter_price',$this->enter_price,true);
+		$criteria->compare('lotsize',$this->lotsize,true);
 		$criteria->compare('comment',$this->comment,true);
 		$criteria->compare('closed_date',$this->closed_date,true);
 		$criteria->compare('closed_price',$this->closed_price,true);
@@ -104,6 +114,10 @@ class SgOrder extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            'sort'=>array(
+                'defaultOrder'=>'id DESC',
+            ),
+            'pagination' => array('pageSize' => 100),
 		));
 	}
 
@@ -117,4 +131,16 @@ class SgOrder extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public function getOrderClass(){
+        if(!$this->result){
+            return 'active';
+        }
+        elseif($this->result>0){
+            return 'success';
+        }
+        elseif($this->result<0){
+            return 'danger';
+        }
+    }
 }

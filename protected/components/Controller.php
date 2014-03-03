@@ -30,7 +30,8 @@ class Controller extends CController
 
             /* @var $baseUrl$theme CTheme */
             $theme = Yii::app()->theme;
-            $cs->registerCssFile($baseUrl . '/themes/bootstrap/css/bootstrap.min.css');
+            $cs->registerCssFile($baseUrl . '/themes/bootstrap/css/bootstrap.css');
+            $cs->registerCssFile($baseUrl . '/themes/bootstrap/css/bootstrap-theme.css');
             $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/jquery.js');
             $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/bootstrap-transition.js');
             $cs->registerScriptFile($baseUrl . '/themes/bootstrap/js/bootstrap-modal.js');

@@ -65,7 +65,7 @@
 
     <!--    Лосы и профиты-->
     <div class="row ">
-        <div class=" col-md-3">
+        <div class=" col-md-6">
             <div class="form-group has-error has-feedback">
                 <?php if (Yii::app()->controller->action->id == 'create') { ?>
                     <?php echo CHtml::telField('stoploss', '', array('placeholder' => 'Добавить stop LOSS', 'class' => 'form-control')); ?>
@@ -73,14 +73,13 @@
                 } else {
                     echo CHtml::Button('Добавить stop LOSS', array(
                         'onclick' => '$("#mydialog").dialog("open"); return false;',
-                        'class' => '"btn btn-danger'
+                        'class' => 'btn btn-primary btn-primary btn-block btn-danger'
                     ));
                 }?>
             </div>
         </div>
-        <div class=" col-md-3">
-        </div>
-        <div class=" col-md-3">
+
+        <div class=" col-md-6">
             <div class="form-group has-success has-feedback">
                 <?php if (Yii::app()->controller->action->id == 'create') { ?>
                     <?php echo CHtml::telField('takeprofit', '', array('placeholder' => 'Добавить stop TakeProfit', 'class' => 'form-control')); ?>
@@ -88,19 +87,63 @@
                 } else {
                     echo CHtml::Button('Добавить take Profit', array(
                         'onclick' => '$("#mydialogProf").dialog("open"); return false;',
-                        'class' => '"btn btn-success'
+                        'class' => 'btn btn-primary btn-primary btn-block  btn-success'
                     ));
                 }?>
             </div>
         </div>
 
+        </div>
+
+    <div class="row ">
+
+
+        <div class=" col-md-6">
+
+            <?php if(isset($loss)){
+                $this->widget('zii.widgets.grid.CGridView', array(
+                    'dataProvider'=>$loss->search($_GET['id']),
+                    'template'=>'{items}',
+                    'columns'=>array(
+                        'price',
+                        'create_date',
+                    ),
+                ));
+            }?>
+
+        </div>
+
+
+        <div class=" col-md-6">
+
+            <?php if(isset($profit)){
+                $this->widget('zii.widgets.grid.CGridView', array(
+                    'dataProvider'=>$profit->search($_GET['id']),
+                    'template'=>'{items}',
+                    'columns'=>array(
+                        'price',
+                        'create_date',
+                    ),
+                ));
+            }?>
+
+        </div>
 
     </div>
+
 
 
     <div id="simple-div"></div>
 
     <div class="row show-grid">
+
+        <div class="row col-md-3">
+            <?php echo $form->labelEx($model, 'lotsize'); ?>
+            <?php echo $form->textField($model, 'lotsize', array('size' => 15, 'maxlength' => 5, 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'lotsize'); ?>
+
+        </div>
+
         <div class="row col-md-3">
             <?php echo $form->labelEx($model, 'closed_date'); ?>
             <?php $this->widget('CJuiDateTimePicker', array(
@@ -182,7 +225,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'clientOptions' => array(
         'validateOnSubmit' => true,
     ),
-    'action' => array('sgorder/addloss'),
+    'action' => array('sgOrder/addloss'),
 ));
 ?>
 
@@ -221,7 +264,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'clientOptions' => array(
         'validateOnSubmit' => true,
     ),
-    'action' => array('sgorder/addprofit'),
+    'action' => array('sgOrder/addprofit'),
 ));
 ?>
 
